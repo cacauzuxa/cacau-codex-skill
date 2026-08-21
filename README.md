@@ -7,7 +7,7 @@ Cacau orquestra Sol e Luna para economizar contexto sem abrir mão de uma revis�
 Cole no chat do Codex:
 
 ```text
-$skill-installer Instale a Cacau deste repositório: https://github.com/luckwolff-web/cacau-codex-skill/tree/main/cacau
+$skill-installer Instale a Cacau deste repositório: https://github.com/cacauzuxa/cacau-codex-skill/tree/main/cacau
 ```
 
 O instalador baixa a pasta `cacau` e valida o `SKILL.md`.
