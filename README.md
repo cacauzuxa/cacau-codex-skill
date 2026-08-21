@@ -4,7 +4,13 @@ Cacau orquestra Sol e Luna para economizar contexto sem abrir mão de uma revis�
 
 ## Instalação pelo próprio Codex
 
-No Codex, invoque `$skill-installer` e peça para instalar a pasta `cacau` deste repositório.
+Cole no chat do Codex:
+
+```text
+$skill-installer Instale a Cacau deste repositório: https://github.com/luckwolff-web/cacau-codex-skill/tree/main/cacau
+```
+
+O instalador baixa a pasta `cacau` e valida o `SKILL.md`.
 
 Depois, em uma nova tarefa, invoque:
 
@@ -20,4 +26,3 @@ $cacau seu pedido aqui
 ## Segurança
 
 A skill não contém credenciais. Pagamentos, publicações, exclusões e outros efeitos externos continuam exigindo autorização explícita.
-
