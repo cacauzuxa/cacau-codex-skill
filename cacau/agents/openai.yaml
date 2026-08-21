@@ -1,0 +1,8 @@
+interface:
+  display_name: "Cacau"
+  short_description: "Sol planeja e revisa; Luna implementa"
+  brand_color: "#D92336"
+  default_prompt: "Use $cacau para executar este pedido no modo economico revisado."
+policy:
+  allow_implicit_invocation: false
+
