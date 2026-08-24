@@ -1,54 +1,42 @@
 ---
 name: cacau
-description: Orquestre Sol e Luna com delegacao economica e revisao proporcional. Use apenas quando o usuario invocar explicitamente $cacau.
+description: Orquestre uma Luna High para implementacoes e revisao economica, separando analise somente leitura de mudancas. Use apenas quando o usuario invocar explicitamente $cacau.
 ---
 
 # Cacau
 
-Quando o usuario invocar `$cacau`, execute este fluxo:
+Use esta skill somente com invocacao explicita de `$cacau`. Preserve o modelo principal ja selecionado na conversa como Sol: a skill nao troca, escolhe ou promete trocar o modelo de Sol.
 
-1. Sol entende o problema, define arquitetura, riscos e criterios de aceite.
-2. Luna implementa e testa de ponta a ponta.
-3. Sol faz revisao proporcional ao risco, sem repetir a implementacao.
-4. Se necessario, a mesma Luna recebe no maximo uma rodada de correcoes mecanicas.
-5. Sol fecha apenas as lacunas de evidencia e assume a entrega.
+## Rota
 
-Prefira Sol `medium`; use `high` somente quando planejamento, integracao, depuracao ou risco exigirem. Nao eleve Sol para `xhigh` automaticamente.
+Classifique o pedido antes de delegar:
 
-## Spawn e identificacao
+- **Leitura, revisao ou diagnostico sem alteracao:** modo somente leitura. Delegue a tarefa lateral com capsula que proiba escrita e inspecione apenas o escopo necessario, sem editar, excluir, mover ou produzir efeitos externos.
+- **Implementacao, correcao ou construcao:** modo de mudanca. So escreva quando o pedido autorizar a mudanca; se o pedido misturar diagnostico e implementacao, conclua a separacao e os achados antes de alterar.
+- **Ambiguo:** trate como leitura e peca autorizacao objetiva antes de escrever.
 
-- A invocacao explicita exige uma Cacau lateral, mesmo em teste curto.
-- Use a ferramenta nativa direta de `spawn_agent`; nao a procure dentro de `functions.exec` e nao crie outra tarefa com `create_thread` ou equivalentes.
-- Passe explicitamente `model="gpt-5.6-luna"`, `reasoning_effort="high"` e `fork_turns="none"`. Nunca dependa da heranca do agente principal; herde turnos somente se o contexto indispensavel nao puder ser resumido com seguranca.
-- Resuma o objetivo em duas a cinco palavras. Use `task_name="cacau_luna_high_<objetivo_slug>"`, com slug curto em minusculas ASCII, numeros e underscores. Para `xhigh`, use `cacau_luna_xhigh_<objetivo_slug>`.
-- Apos o spawn, informe: `Cacau - Luna High / <objetivo principal>`, ajustando `High` ao esforco solicitado.
-- O painel pode mostrar apelido automatico, que nao comprova o modelo. Quando possivel, confirme `turn_context.model` e `effort` antes da entrega e relate `solicitado` versus `verificado`; se nao puder verificar, diga isso.
-- Aguarde pelo mecanismo nativo sem polling repetitivo. Use `followup_task`, `send_input` ou equivalente para a unica correcao, preservando o agente. Interrompa somente por motivo real; nao exija `close_agent` se a ferramenta nao existir.
+## Luna e propriedade
 
-## Delegacao economica
+Toda invocacao explicita inicia uma tarefa lateral, inclusive em teste curto. Use a ferramenta nativa direta `spawn_agent` com `model="gpt-5.6-luna"`, `reasoning_effort="high"` e `fork_turns="none"`; um inteiro positivo menor so e permitido quando contexto indispensavel nao puder ser resumido. Nunca use `fork_turns="all"` junto de override. Use `task_name="cacau_luna_high_<objetivo_slug>"`, com slug curto em minusculas ASCII, numeros e underscores.
 
-- Envie a Luna uma capsula curta: objetivo, escopo, arquivos relevantes, invariantes, restricoes, testes e criterios de aceite. Nao replique a conversa.
-- Use um unico agente escritor, salvo trabalhos claramente independentes.
-- Exija retorno conciso: resultado, arquivos alterados, testes, decisoes, riscos e pendencias.
-- Luna `high` e o padrao. Use `xhigh` somente para raciocinio especialmente dificil ou quando medicao representativa mostrar ganho real por tarefa concluida.
+Luna High e o padrao; use xhigh somente por pedido explicito ou ganho medido. Para xhigh, troque `high` por `xhigh` no `task_name`. Apos o spawn, anuncie `Cacau - Luna High / <objetivo>` ou `Cacau - Luna XHigh / <objetivo>`, conforme o effort solicitado. Quando disponivel, confirme `turn_context.model` e `effort` e relate `solicitado` versus `verificado`; se nao puder verificar, diga explicitamente que nao foi possivel verificar.
 
-## Revisao de Sol
+Envie uma capsula curta com objetivo, modo (somente leitura ou mudanca), escopo, arquivos relevantes, invariantes, testes e criterios de aceite. Use um unico agente escritor. Declare os arquivos sob propriedade temporaria da Luna durante a escrita: nao haja escritores concorrentes, preserve alteracoes preexistentes e devolva a propriedade antes da revisao. Nao mova nem exclua arquivos fora do escopo.
 
-A revisao preenche lacunas de evidencia; nao reproduz o trabalho de Luna. Escolha o menor nivel suficiente:
+Se `spawn_agent` falhar, nao aceitar o modelo/esforco solicitado ou estiver indisponivel, falhe fechado: nao finja que Luna executou e nao substitua a Luna por outro modelo. Em leitura, Sol pode concluir uma analise explicitamente identificada como de Sol; em mudanca, pare e reporte o bloqueio sem escrever.
 
-  - `leve`: diff e teste diretamente afetado;
-  - `normal`: diff, testes afetados e principais casos de borda;
-  - `critico direcionado`: nivel normal mais a validacao isolada do risco concreto, como concorrencia, credenciais, pagamentos ou efeitos externos.
-- Confie em testes de Luna com comando, resultado e evidencia verificaveis. Repita apenas testes baratos ou necessarios por risco, falha, evidencia incompleta ou comportamento nao deterministico.
-- Nao execute `todos os parsers`, suite completa, varredura de raizes inteiras ou releitura do repositorio, salvo impacto transversal comprovado ou pedido explicito de auditoria completa.
-- Com credenciais, limite a busca de segredos ao diff, arquivos alterados e logs produzidos; amplie somente diante de indicio concreto.
-- Se outra skill trouxer uma lista extensa, aplique apenas os itens ligados a superficie alterada. Homologacao completa exige pedido explicito ou mudanca realmente transversal.
-- Pare quando cada criterio de aceite tiver evidencia suficiente e nao procure melhorias fora do escopo.
+Depois do spawn, aguarde sem polling repetitivo. Para uma unica correcao mecanica, use `followup_task` ou `send_message`, preservando a mesma Luna. Em timeout, falha, evidencia insuficiente ou correcao semantica/nao mecanica, pare e reporte bloqueio ou pendencia; nao entregue estado incompleto silenciosamente.
 
-## Limites e entrega
+## Revisao e evidencia
 
-- Nao trate exit code zero nem a declaracao de Luna como prova isolada de sucesso.
-- Nao execute pagamentos, uploads bancarios, envios, exclusoes, publicacoes ou outros efeitos externos sem autorizacao explicita.
-- Em fluxos financeiros, diferencie sucesso tecnico de sucesso de negocio. Mudanca de arquitetura ou correcao com risco financeiro fica com Sol.
-- Informe o que Luna implementou, o que Sol verificou e o que ainda depende de homologacao externa.
+Sol revisa o resultado, sem reproduzir a implementacao. Use a menor verificacao suficiente:
 
+- baixo risco: diff e teste diretamente afetado;
+- risco normal: diff, testes afetados e bordas principais;
+- risco critico: o anterior mais a validacao isolada do risco concreto, como credenciais, concorrencia, pagamentos ou efeitos externos.
+
+Use uma matriz criterio -> evidencia somente quando houver varios criterios, risco relevante ou ganho claro de rastreabilidade; para pedidos simples, registre a evidencia em texto curto. Nao trate exit code zero, arquivos gerados ou a declaracao da Luna como prova isolada: confirme o resultado observavel e, quando aplicavel, o status de negocio. Pare quando cada criterio tiver evidencia suficiente.
+
+Para economizar contexto, nao releia o repositorio inteiro, rode a suite completa ou faca varreduras exaustivas, salvo impacto transversal comprovado ou pedido explicito.
+
+Nao execute pagamentos, uploads bancarios, envios, exclusoes, publicacoes ou outros efeitos externos sem autorizacao explicita. Retorne de forma concisa: modo, resultado, arquivos alterados (se houver), testes/evidencias, riscos e pendencias de homologacao.

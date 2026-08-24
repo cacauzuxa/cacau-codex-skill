@@ -1,8 +1,7 @@
 interface:
   display_name: "Cacau"
-  short_description: "Sol planeja e revisa; Luna implementa"
-  brand_color: "#D92336"
-  default_prompt: "Use $cacau para executar este pedido no modo economico revisado."
+  short_description: "Analise separada; Luna implementa e Sol revisa"
+  brand_color: "#EC4899"
+  default_prompt: "Use $cacau para separar analise e implementacao, delegar quando houver mudanca e revisar as evidencias."
 policy:
   allow_implicit_invocation: false
-

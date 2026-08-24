@@ -1,6 +1,8 @@
 # Cacau para Codex
 
-Cacau organiza o trabalho entre Sol e Luna: o modelo principal planeja e revisa, enquanto uma Luna High executa leitura, implementação e testes em uma tarefa lateral.
+Cacau organiza o trabalho entre Sol e Luna: o modelo principal já selecionado na conversa planeja e revisa, enquanto uma Luna High inspeciona pedidos sem alteração ou implementa e testa mudanças autorizadas em uma tarefa lateral. A skill não troca o modelo principal.
+
+Toda invocação explícita delega uma tarefa lateral. Pedidos de leitura, revisão e diagnóstico seguem modo somente leitura. Em pedidos de implementação, a Luna é a única escritora temporária e Sol revisa as evidências de forma proporcional ao risco. Se houver timeout, falha ou correção não mecânica, o fluxo para e reporta a pendência sem entregar estado incompleto.
 
 ## Guia visual
 
@@ -22,6 +24,12 @@ Em uma nova tarefa, invoque a skill junto do pedido:
 
 ```text
 $cacau Implemente o filtro, mantenha o formato atual e rode os testes.
+```
+
+Para uma análise sem mudanças, explicite essa restrição:
+
+```text
+$cacau Diagnostique a falha e revise os arquivos sem alterar nada.
 ```
 
 A Cacau tende a ajudar mais quando há bastante contexto para ler, um escopo verificável e um retorno curto para o Sol revisar. Para ajustes triviais, usar apenas o chat principal pode ser mais econômico.
