@@ -48,7 +48,7 @@ npx codex-pets add cacau
 
 - `cacau/SKILL.md`: fluxo de orquestração e limites.
 - `cacau/agents/openai.yaml`: nome, descrição e política de invocação.
-- `docs/cacau-infografico.pdf`: guia visual em duas páginas.
+- `docs/cacau-infografico.pdf`: guia visual em três páginas.
 
 ## Segurança
 
