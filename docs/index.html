@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cacau para Codex | Sol e Luna em um fluxo claro</title>
+  <meta name="description" content="A skill Cacau organiza análise, implementação autorizada e revisão entre Sol e Luna no Codex.">
+  <link rel="canonical" href="https://cacauzuxa.github.io/cacau-codex-skill/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Cacau para Codex">
+  <meta property="og:description" content="Um fluxo explícito para separar análise, implementação autorizada e revisão no Codex.">
+  <meta property="og:url" content="https://cacauzuxa.github.io/cacau-codex-skill/">
+  <meta property="og:image" content="https://cacauzuxa.github.io/cacau-codex-skill/cacau-pixel-art.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:image" content="https://cacauzuxa.github.io/cacau-codex-skill/cacau-pixel-art.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #211b2e;
+      --muted: #625b70;
+      --paper: #fffaf5;
+      --card: #ffffff;
+      --pink: #d82e76;
+      --pink-dark: #a91959;
+      --line: #eadde4;
+      --lavender: #f0e8ff;
+      --peach: #ffe7d4;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--paper); line-height: 1.6; }
+    a { color: var(--pink-dark); font-weight: 700; }
+    a:focus-visible { outline: 3px solid #4f32a3; outline-offset: 4px; border-radius: 4px; }
+    .wrap { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; }
+    header { padding: 1.25rem 0; }
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand { color: var(--ink); text-decoration: none; font-size: 1.15rem; }
+    nav ul { display: flex; gap: 1.1rem; margin: 0; padding: 0; list-style: none; }
+    nav a { font-size: .95rem; }
+    .hero { padding: clamp(3.5rem, 10vw, 7rem) 0 5rem; }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(2rem, 7vw, 6rem); align-items: center; }
+    .eyebrow { color: var(--pink-dark); font-size: .82rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    h1, h2, h3 { line-height: 1.15; margin: 0 0 1rem; letter-spacing: -.025em; }
+    h1 { max-width: 12ch; font-size: clamp(2.8rem, 7vw, 5.7rem); }
+    h2 { font-size: clamp(2rem, 4vw, 3rem); }
+    h3 { font-size: 1.25rem; }
+    .lead { max-width: 62ch; color: var(--muted); font-size: clamp(1.08rem, 2vw, 1.3rem); }
+    .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+    .button { display: inline-block; padding: .78rem 1.05rem; border: 2px solid var(--pink); border-radius: 999px; text-decoration: none; }
+    .button.primary { color: #fff; background: var(--pink); }
+    .button.primary:hover { background: var(--pink-dark); border-color: var(--pink-dark); }
+    .button.secondary { color: var(--pink-dark); background: transparent; }
+    .button.secondary:hover { background: #fff; }
+    .orb { min-height: 310px; display: grid; place-items: center; position: relative; }
+    .orb::before, .orb::after { content: ""; position: absolute; border-radius: 50%; }
+    .orb::before { width: 245px; height: 245px; background: var(--lavender); transform: rotate(8deg); }
+    .orb::after { width: 135px; height: 135px; right: 4%; bottom: 5%; background: var(--peach); }
+    .mascot { z-index: 1; width: min(230px, 66vw); height: auto; display: block; border: 2px solid var(--ink); border-radius: 44% 56% 52% 48%; background: #ffd4e6; box-shadow: 11px 12px 0 var(--ink); transform: rotate(-5deg); }
+    section { padding: 5rem 0; }
+    .section-intro { max-width: 62ch; margin-bottom: 2rem; color: var(--muted); }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .card { padding: 1.45rem; border: 1px solid var(--line); border-radius: 1.1rem; background: var(--card); }
+    .card p { margin: 0; color: var(--muted); }
+    .number { display: inline-grid; width: 2rem; height: 2rem; place-items: center; margin-bottom: 1rem; border-radius: 50%; color: #fff; background: var(--pink); font-weight: 800; }
+    .band { background: #2c2340; color: #fff; }
+    .band .section-intro, .band .card p { color: #ddd5e8; }
+    .band .card { border-color: #514568; background: #382d4e; }
+    .band code { color: #ffd4e6; }
+    .band .button.secondary { color: #ffd4e6; }
+    .code { overflow-x: auto; overflow-wrap: anywhere; white-space: pre-wrap; margin: 1.5rem 0 0; padding: 1rem 1.15rem; border-radius: .8rem; background: #17121f; font-size: .95rem; }
+    footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+    footer p { margin: .35rem 0; }
+    @media (max-width: 760px) {
+      nav { align-items: flex-start; flex-direction: column; }
+      nav ul { flex-wrap: wrap; gap: .55rem 1rem; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 3.5rem; }
+      .orb { min-height: 250px; }
+      .cards { grid-template-columns: 1fr; }
+      section { padding: 3.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="wrap" aria-label="Navegação principal">
+      <a class="brand" href="#inicio">🍫 <strong>Cacau</strong> para Codex</a>
+      <ul>
+        <li><a href="#como-funciona">Como funciona</a></li>
+        <li><a href="#instalacao">Instalação</a></li>
+        <li><a href="https://github.com/cacauzuxa/cacau-codex-skill">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Uma skill para o Codex</p>
+          <h1>Sol pensa. Luna executa. Cacau organiza.</h1>
+          <p class="lead">Um fluxo explícito para separar análise, implementação autorizada e revisão — com limites claros e evidências no final.</p>
+          <div class="actions">
+            <a class="button primary" href="#instalacao">Instalar a Cacau</a>
+            <a class="button secondary" href="https://github.com/cacauzuxa/cacau-codex-skill">Ver o código no GitHub</a>
+          </div>
+        </div>
+        <div class="orb"><img class="mascot" src="cacau-pixel-art.png" alt="Cacau, a mascote do Codex, em uma ilustração sobre fundo rosa." width="1254" height="1254"></div>
+      </div>
+    </section>
+
+    <section id="como-funciona">
+      <div class="wrap">
+        <h2>Um contrato simples para cada pedido</h2>
+        <p class="section-intro">A Cacau só entra quando você invoca <code>$cacau</code>. O tipo de pedido define o modo, o escopo e a validação esperada.</p>
+        <div class="cards">
+          <article class="card"><span class="number">1</span><h3>Classifique</h3><p>Leitura, revisão e diagnóstico ficam em modo somente leitura. Implementação só começa com autorização objetiva.</p></article>
+          <article class="card"><span class="number">2</span><h3>Execute</h3><p>Luna assume a tarefa lateral. Em mudanças, ela é a única escritora temporária dentro do escopo combinado.</p></article>
+          <article class="card"><span class="number">3</span><h3>Revise</h3><p>Sol confere diff, testes afetados, riscos e pendências. Resultado aparente não substitui evidência observável.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="instalacao">
+      <div class="wrap">
+        <h2>Instale no próprio chat do Codex</h2>
+        <p class="section-intro">Use o instalador de skills com a pasta <code>cacau</code> deste repositório. Depois, invoque a Cacau explicitamente no pedido.</p>
+        <pre class="code"><code>$skill-installer Instale a skill Cacau deste repositório: https://github.com/cacauzuxa/cacau-codex-skill/tree/main/cacau</code></pre>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/cacauzuxa/cacau-codex-skill#instalação">Ler o README completo</a>
+          <a class="button secondary" href="https://codex-pets.net/#/pets/cacau">Conhecer o pet Cacau</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Limites que fazem parte do design</h2>
+        <p class="section-intro">A skill não troca o modelo principal, não promete que uma tarefa será mais rápida ou barata e não executa pagamentos, envios, publicações ou exclusões sem autorização explícita. Timeout, falha ou evidência insuficiente viram pendência — não sucesso presumido.</p>
+        <p><a href="https://github.com/cacauzuxa/cacau-codex-skill/blob/main/cacau/SKILL.md">Leia as regras completas da skill no GitHub</a> ou <a href="cacau-infografico.pdf">abra o infográfico do fluxo</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><strong>Cacau para Codex</strong> · Copyright © 2026 Lucas Forte · <a href="https://github.com/cacauzuxa/cacau-codex-skill/blob/main/LICENSE">Licença MIT</a></p>
+      <p><a href="https://github.com/cacauzuxa/cacau-codex-skill">Repositório</a> · Landing page estática, sem bibliotecas externas.</p>
+    </div>
+  </footer>
+</body>
+</html>

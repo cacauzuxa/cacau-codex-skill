@@ -1,55 +1,77 @@
 # Cacau para Codex
 
-Cacau organiza o trabalho entre Sol e Luna: o modelo principal já selecionado na conversa planeja e revisa, enquanto uma Luna High inspeciona pedidos sem alteração ou implementa e testa mudanças autorizadas em uma tarefa lateral. A skill não troca o modelo principal.
+Uma skill explícita para organizar trabalho entre o modelo principal do Codex (Sol) e uma Luna High. Sol mantém o contexto da conversa, enquanto a tarefa lateral faz a análise ou a implementação autorizada e devolve evidências para revisão.
 
-Toda invocação explícita delega uma tarefa lateral. Pedidos de leitura, revisão e diagnóstico seguem modo somente leitura. Em pedidos de implementação, a Luna é a única escritora temporária e Sol revisa as evidências de forma proporcional ao risco. Se houver timeout, falha ou correção não mecânica, o fluxo para e reporta a pendência sem entregar estado incompleto.
+> A Cacau não troca o modelo principal, não promete economia e não executa efeitos externos sem autorização.
 
-## Guia visual
+## O que ela faz
 
-[Abra o infográfico completo](docs/cacau-infografico.pdf) para ver o fluxo, exemplos de uso e onde existe potencial de economia de contexto.
+- Separa leitura, revisão e diagnóstico sem alteração do modo de mudança.
+- Em uma implementação autorizada, reserva a escrita para a Luna e preserva o escopo indicado.
+- Para em caso de timeout, falha, evidência insuficiente ou mudança não mecânica que precise de decisão.
+- Devolve um resultado curto com arquivos, testes, riscos e pendências para Sol revisar.
 
 ## Instalação
 
-Cole no chat do Codex:
+No chat do Codex, use o instalador de skills com o repositório e a pasta da skill:
 
 ```text
-$skill-installer Instale a Cacau deste repositório: https://github.com/cacauzuxa/cacau-codex-skill/tree/main/cacau
+$skill-installer Instale a skill Cacau deste repositório: https://github.com/cacauzuxa/cacau-codex-skill/tree/main/cacau
 ```
 
-O instalador baixa a pasta `cacau` e valida o `SKILL.md`.
+Depois da instalação, invoque a skill somente quando quiser esse fluxo. A Cacau exige a invocação explícita de `$cacau`.
 
-## Uso
+## Como usar
 
-Em uma nova tarefa, invoque a skill junto do pedido:
+Inclua `$cacau` no pedido e diga o resultado esperado:
 
 ```text
-$cacau Implemente o filtro, mantenha o formato atual e rode os testes.
+$cacau Implemente o filtro por status, preserve o formato atual e rode os testes afetados.
 ```
 
-Para uma análise sem mudanças, explicite essa restrição:
+Para uma análise sem mudanças, deixe a restrição clara:
 
 ```text
-$cacau Diagnostique a falha e revise os arquivos sem alterar nada.
+$cacau Diagnostique por que a importação falha e revise os arquivos sem alterar nada.
 ```
 
-A Cacau tende a ajudar mais quando há bastante contexto para ler, um escopo verificável e um retorno curto para o Sol revisar. Para ajustes triviais, usar apenas o chat principal pode ser mais econômico.
-
-## Pet opcional
-
-O pet animado da Cacau pode ser instalado separadamente:
+Para uma tarefa de manutenção, delimite também os arquivos, os invariantes e a validação:
 
 ```text
-npx codex-pets add cacau
+$cacau Atualize a documentação em README.md e docs/index.html. Não altere cacau/SKILL.md.
+Valide os links locais e informe qualquer pendência de publicação.
 ```
 
-[Veja a Cacau no Codex Pets](https://codex-pets.net/#/pets/cacau).
+## Funcionamento: Sol e Luna
+
+1. **Sol classifica o pedido.** Leitura, revisão e diagnóstico seguem em modo somente leitura. Implementação e correção só seguem quando o pedido autoriza a mudança.
+2. **Luna executa a tarefa lateral.** Em modo de mudança, ela é a única escritora temporária dentro do escopo declarado. Em modo somente leitura, não edita, exclui, move nem produz efeitos externos.
+3. **Sol revisa as evidências.** O resultado considera o diff, os testes diretamente afetados e, quando necessário, a validação do risco concreto. Código gerado ou exit code zero, isoladamente, não prova que o objetivo foi atendido.
+
+Esse fluxo ajuda a manter análise e implementação separadas, mas o resultado ainda depende do escopo, dos testes e do ambiente disponíveis.
+
+## Limitações e segurança
+
+- A skill só pode ser usada com `$cacau`; ela não é acionada implicitamente.
+- A disponibilidade da Luna, o modelo e o tempo de execução dependem do ambiente do Codex.
+- A Cacau não garante que uma tarefa ficará mais rápida, barata ou correta sem uma validação adequada.
+- Pagamentos, uploads, envios, publicações, exclusões, movimentação de arquivos e outras ações externas continuam exigindo autorização explícita.
+- Em caso de falha ou timeout, a tarefa deve parar e reportar a pendência; não há promessa de estado completo.
+- Não coloque credenciais, tokens ou dados sensíveis no pedido, no repositório ou nos artefatos de teste.
 
 ## Estrutura
 
-- `cacau/SKILL.md`: fluxo de orquestração e limites.
-- `cacau/agents/openai.yaml`: nome, descrição e política de invocação.
-- `docs/cacau-infografico.pdf`: guia visual em três páginas.
+- [`cacau/SKILL.md`](cacau/SKILL.md): regras de roteamento, propriedade de escrita e revisão.
+- [`cacau/agents/openai.yaml`](cacau/agents/openai.yaml): nome, descrição e política de invocação.
+- [`docs/index.html`](docs/index.html): landing page estática para GitHub Pages.
+- [`docs/cacau-infografico.pdf`](docs/cacau-infografico.pdf): guia visual do fluxo.
 
-## Segurança
+## Links
 
-A skill não contém credenciais. Pagamentos, publicações, exclusões e outros efeitos externos continuam exigindo autorização explícita.
+- [Abrir o repositório no GitHub](https://github.com/cacauzuxa/cacau-codex-skill)
+- [Abrir a landing page](https://cacauzuxa.github.io/cacau-codex-skill/)
+- [Conhecer a Cacau no Codex Pets](https://codex-pets.net/#/pets/cacau)
+
+## Licença
+
+Este projeto está disponível sob a [licença MIT](LICENSE). Copyright © 2026 Lucas Forte.
