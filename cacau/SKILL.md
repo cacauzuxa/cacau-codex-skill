@@ -25,7 +25,7 @@ Envie uma capsula curta com objetivo, modo (somente leitura ou mudanca), escopo,
 
 Se `spawn_agent` falhar, nao aceitar o modelo/esforco solicitado ou estiver indisponivel, falhe fechado: nao finja que Luna executou e nao substitua a Luna por outro modelo. Em leitura, Sol pode concluir uma analise explicitamente identificada como de Sol; em mudanca, pare e reporte o bloqueio sem escrever.
 
-Depois do spawn, aguarde sem polling repetitivo. Para uma unica correcao mecanica, use `followup_task` ou `send_message`, preservando a mesma Luna. Em timeout, falha, evidencia insuficiente ou correcao semantica/nao mecanica, pare e reporte bloqueio ou pendencia; nao entregue estado incompleto silenciosamente.
+Depois do spawn, aguarde sem polling repetitivo. Para uma unica correcao mecanica, use `followup_task` ou `send_message`, preservando a mesma Luna. `Wait timed out` significa apenas que a janela de espera expirou, nao que a Luna falhou: aguarde novamente com intervalos maiores/backoff e nao interrompa nem duplique o trabalho so por isso. Trate timeout de ferramenta localmente, sem confundi-lo com timeout do agente, e relate falta de creditos separadamente. Interrompa somente por pedido ou objetivo substituido, erro terminal confirmado, bloqueio comprovado da Luna ou outra condicao real; em falha terminal, evidencia insuficiente ou correcao semantica/nao mecanica, pare e reporte a pendencia.
 
 ## Revisao e evidencia
 
