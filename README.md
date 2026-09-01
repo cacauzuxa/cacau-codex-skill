@@ -2,13 +2,15 @@
 
 Uma skill explícita para organizar trabalho entre o modelo principal do Codex (Sol) e uma Luna High. Sol mantém o contexto da conversa, enquanto a tarefa lateral faz a análise ou a implementação autorizada e devolve evidências para revisão.
 
+Versão pública: **1.1.0**.
+
 > A Cacau não troca o modelo principal, não promete economia e não executa efeitos externos sem autorização.
 
 ## O que ela faz
 
 - Separa leitura, revisão e diagnóstico sem alteração do modo de mudança.
 - Em uma implementação autorizada, reserva a escrita para a Luna e preserva o escopo indicado.
-- Para em caso de timeout, falha, evidência insuficiente ou mudança não mecânica que precise de decisão.
+- Distingue timeout da janela de espera de falha do agente e encerra agentes órfãos somente ao fechar o lifecycle da invocação.
 - Devolve um resultado curto com arquivos, testes, riscos e pendências para Sol revisar.
 
 ## Instalação
@@ -56,8 +58,12 @@ Esse fluxo ajuda a manter análise e implementação separadas, mas o resultado 
 - A disponibilidade da Luna, o modelo e o tempo de execução dependem do ambiente do Codex.
 - A Cacau não garante que uma tarefa ficará mais rápida, barata ou correta sem uma validação adequada.
 - Pagamentos, uploads, envios, publicações, exclusões, movimentação de arquivos e outras ações externas continuam exigindo autorização explícita.
-- Em caso de falha ou timeout, a tarefa deve parar e reportar a pendência; não há promessa de estado completo.
+- Em caso de falha terminal ou evidência insuficiente, a tarefa deve parar e reportar a pendência; um `Wait timed out` isolado só informa que a janela expirou e não autoriza interrupção ou duplicação.
 - Não coloque credenciais, tokens ou dados sensíveis no pedido, no repositório ou nos artefatos de teste.
+
+## Lifecycle dos agentes
+
+Depois do resultado e da revisão/correção, inspecione uma vez os agentes criados pela invocação. Agentes `completed` ficam como histórico e não precisam de `interrupt`. Agentes `running` ou `pending_init` que perderam o objetivo, ficaram órfãos ou cujo objetivo terminou devem ser interrompidos para liberar slots. O estado ativo não deve ser confundido com registro histórico, e não é necessário fazer polling repetitivo para essa limpeza.
 
 ## Estrutura
 
